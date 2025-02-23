@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Flagpole -->
+  <rect x="60" y="60" width="20" height="400" fill="#5A5A5A"/>
+
+  <!-- Flag -->
+  <path d="M80,80 C180,50 280,110 380,80 L380,240 C280,270 180,210 80,240 Z" 
+        fill="#FF0000" stroke="black" stroke-width="5"/>
+
+  <!-- Flag Shadow -->
+  <path d="M380,80 C280,110 180,50 80,80 L80,240 C180,210 280,270 380,240 Z" 
+        fill="rgba(0,0,0,0.2)"/>
+</svg>

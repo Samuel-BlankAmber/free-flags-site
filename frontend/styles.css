@@ -1,0 +1,60 @@
+body {
+    background-color: #ff00ff;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: #00ff00;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 72px;
+    color: #ffff00;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+h2 {
+    font-size: 36px;
+    color: #ff0000;
+}
+
+p {
+    font-size: 20px;
+    color: #00ffff;
+    text-decoration: underline;
+}
+
+.neon {
+    color: #7a33ff;
+    text-shadow: 0 0 10px #7a33ff, 0 0 20px #7a33ff;
+}
+
+.button {
+    background-color: #00ff00;
+    border: 2px solid #ff00ff;
+    color: black;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 24px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #ff00ff;
+    color: white;
+    font-size: 28px;
+}
+
+marquee {
+    font-size: 30px;
+    color: #ff0000;
+}
+
+.rainbow-text {
+    background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 50px;
+}
