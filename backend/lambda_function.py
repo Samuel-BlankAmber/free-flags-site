@@ -5,6 +5,9 @@ import urllib.error
 import boto3
 import random
 
+with open("messages.txt") as f:
+    FLAG_MESSAGES = f.read().splitlines()
+
 def fetch_json(url, headers):
     req = urllib.request.Request(url, headers=headers)
     try:
@@ -25,27 +28,9 @@ def get_solves_data(base_url, token):
     }
     return fetch_json(f"{base_url}/api/v1/users/me/solves", headers)
 
-def to_leetspeak(text):
-    mapping = {
-        'a': '4', 'e': '3', 'i': '1', 'o': '0',
-        'A': '4', 'E': '3', 'I': '1', 'O': '0',
-        ' ': '_',
-    }
-    return ''.join(mapping.get(char, char) for char in text)
-
-def gen_flag(prefix):
-    adjectives = ["brave", "clever", "fearless", "resourceful", "innovative"]
-    nouns = ["hacker", "coder", "analyst", "pwner", "explorer"]
-    verbs = ["cracked", "solved", "hacked", "defeated", "overcame"]
-    objects = ["the challenge", "the system", "the code", "the puzzle", "the encryption"]
-
-    adj = random.choice(adjectives)
-    noun = random.choice(nouns)
-    verb = random.choice(verbs)
-    obj = random.choice(objects)
-
-    message = to_leetspeak(f"{adj} {noun} {verb} {obj}")
-    return f"{prefix}{{{message}}}"
+def gen_flags(prefix, num):
+    messages = random.sample(FLAG_MESSAGES, num)
+    return [f"{prefix}{{{message}}}" for message in messages]
 
 def upload_to_s3(bucket_name, file_name, data, content_type="text/plain"):
     s3 = boto3.client("s3")
@@ -62,7 +47,7 @@ def lambda_handler(event, context):
     base_url = os.environ.get("CTFD_BASE_URL")
     flag_prefix = os.environ.get("FLAG_PREFIX")
     bucket_name = os.environ.get("S3_BUCKET_NAME")
-    
+
     if not token or not base_url or not flag_prefix or not bucket_name:
         return {
             "statusCode": 500,
@@ -71,7 +56,16 @@ def lambda_handler(event, context):
                 "details": "CTFD_TOKEN, CTFD_BASE_URL, FLAG_PREFIX, S3_BUCKET_NAME must be set"
             })
         }
-    
+
+    if len(FLAG_MESSAGES) != len(set(FLAG_MESSAGES)):
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "error": "Duplicate messages",
+                "details": "FLAG_MESSAGES must not contain duplicate messages"
+            })
+        }
+
     status_code, solves_data = get_solves_data(base_url, token)
     if status_code != 200:
         return {
@@ -81,16 +75,22 @@ def lambda_handler(event, context):
                 "details": solves_data
             })
         }
-    
+
+    solves = solves_data.get("data", [])
+    flags = gen_flags(flag_prefix, len(solves))
+    assert len(solves) == len(flags) == len(set(flags))
     category_to_challenge_flags = {}
-    for solve in solves_data.get("data", []):
+    for solve, flag in zip(solves, flags):
         challenge = solve.get("challenge", {})
         category = challenge.get("category", "uncategorized")
         name = challenge.get("name", "unknown")
-        flag = gen_flag(flag_prefix)
+        date_str = solve.get("date")
         if category not in category_to_challenge_flags:
             category_to_challenge_flags[category] = {}
-        category_to_challenge_flags[category][name] = flag
+        category_to_challenge_flags[category][name] = {
+            "flag": flag,
+            "date": date_str
+        }
 
     res = upload_to_s3(bucket_name, "flags.json", json.dumps(category_to_challenge_flags))
     if res.get("ResponseMetadata", {}).get("HTTPStatusCode") != 200:

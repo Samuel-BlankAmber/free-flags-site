@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta property="og:title" content="Free Flags" />
-    <meta name="twitter:title" content="Free Flags" />
-    <meta name="description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
+  <meta property="og:title" content="Free Flags" />
+  <meta name="twitter:title" content="Free Flags" />
+  <meta name="description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
 
-    <meta property="og:title" content="Free Flags" />
-    <meta property="og:description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
+  <meta property="og:description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
+  <meta name="twitter:description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
 
-    <meta name="twitter:title" content="Free Flags" />
-    <meta name="twitter:description" content="Free flags!! WOW!! FREE FLAGS!!!!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://freeflags.site" />
+  <meta property="og:site_name" content="Free Flags" />
+  <meta property="og:image" content="http://freeflags.site/freeflags.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="http://freeflags.site/freeflags.jpg" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://freeflags.site" />
-    <meta property="og:site_name" content="Free Flags" />
-    <meta property="og:image" content="http://freeflags.site/freeflags.jpg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="http://freeflags.site/freeflags.jpg" />
-
-    <title>Free Flags</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+  <title>Free Flags</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="marquee-handler.js"></script>
+  <script defer src="flags.js"></script>
+  <script defer src="narrator.js"></script>
+  <script defer src="badges.js"></script>
 </head>
 <body>
-    <marquee id="marquee" scrollamount="20">Flags that are free</marquee>
+  <audio id="free-flags-audio" autoplay>
+    <source src="freeflags.mp3" type="audio/mpeg">
+  </audio>
 
-    <h1>Free Flags</h1>
-    <h2>Get ready for some crazy FREE flags!</h2>
+  <marquee id="marquee" scrollamount="20">Flags that are free</marquee>
 
-    <p class="neon">YOLO</p>
+  <h1>Free Flags</h1>
+  <h2>Get ready for some crazy FREE flags!</h2>
 
-    <p class="rainbow-text">Totally tubular, right?</p>
+  <div id="flags-container"></div>
 </body>
 </html>

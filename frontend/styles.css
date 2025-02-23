@@ -1,60 +1,76 @@
 body {
-    background-color: #ff00ff;
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: #00ff00;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  background-color: #ff00ff;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color: #00ff00;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
-    font-size: 72px;
-    color: #ffff00;
-    text-shadow: 2px 2px 4px #000000;
+  font-size: 72px;
+  color: #ffff00;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 h2 {
-    font-size: 36px;
-    color: #ff0000;
+  font-size: 36px;
+  color: #ff0000;
 }
 
 p {
-    font-size: 20px;
-    color: #00ffff;
-    text-decoration: underline;
+  font-size: 20px;
+  color: #00ffff;
+  text-decoration: underline;
 }
 
 .neon {
-    color: #7a33ff;
-    text-shadow: 0 0 10px #7a33ff, 0 0 20px #7a33ff;
-}
-
-.button {
-    background-color: #00ff00;
-    border: 2px solid #ff00ff;
-    color: black;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-size: 24px;
-    display: inline-block;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-}
-
-.button:hover {
-    background-color: #ff00ff;
-    color: white;
-    font-size: 28px;
+  color: #7a33ff;
+  text-shadow: 0 0 10px #7a33ff, 0 0 20px #7a33ff;
 }
 
 marquee {
-    font-size: 30px;
-    color: #ff0000;
+  font-size: 30px;
+  color: #aeff00;
 }
 
-.rainbow-text {
-    background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    -webkit-background-clip: text;
-    color: transparent;
-    font-size: 50px;
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink 1s step-start 0s infinite;
+}
+
+.category-section {
+  border: 2px dashed #00ffff;
+  margin: 20px;
+  padding: 10px;
+  background-color: #000080;
+}
+
+.category-title {
+  font-size: 36px;
+  color: #ff00ff;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.challenge {
+  font-size: 20px;
+  margin: 5px;
+  color: #ffff00;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.challenge-name {
+  font-weight: bold;
+}
+
+.flag-code {
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  color: #00ff00;
 }
