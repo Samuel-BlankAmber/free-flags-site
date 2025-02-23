@@ -1,9 +1,10 @@
 import json
 import os
+import random
+import time
 import urllib.request
 import urllib.error
 import boto3
-import random
 
 with open("messages.txt") as f:
     FLAG_MESSAGES = f.read().splitlines()
@@ -42,18 +43,33 @@ def upload_to_s3(bucket_name, file_name, data, content_type="text/plain"):
     )
     return response
 
+def invalidate_cloudfront_cache(distribution_id, paths):
+    client = boto3.client('cloudfront')
+    response = client.create_invalidation(
+        DistributionId=distribution_id,
+        InvalidationBatch={
+            'Paths': {
+                'Quantity': len(paths),
+                'Items': paths
+            },
+            'CallerReference': str(time.time())
+        }
+    )
+    return response
+
 def lambda_handler(event, context):
     token = os.environ.get("CTFD_TOKEN")
     base_url = os.environ.get("CTFD_BASE_URL")
     flag_prefix = os.environ.get("FLAG_PREFIX")
     bucket_name = os.environ.get("S3_BUCKET_NAME")
+    cloudfront_distribution_id = os.environ.get("CLOUDFRONT_DISTRIBUTION_ID")
 
-    if not token or not base_url or not flag_prefix or not bucket_name:
+    if not token or not base_url or not flag_prefix or not bucket_name or not cloudfront_distribution_id:
         return {
             "statusCode": 500,
             "body": json.dumps({
                 "error": "Missing configuration",
-                "details": "CTFD_TOKEN, CTFD_BASE_URL, FLAG_PREFIX, S3_BUCKET_NAME must be set"
+                "details": "CTFD_TOKEN, CTFD_BASE_URL, FLAG_PREFIX, S3_BUCKET_NAME, and CLOUDFRONT_DISTRIBUTION_ID must be set as environment variables"
             })
         }
 
@@ -102,7 +118,17 @@ def lambda_handler(event, context):
             })
         }
 
+    res = invalidate_cloudfront_cache(cloudfront_distribution_id, ["/flags.json"])
+    if res.get("ResponseMetadata", {}).get("HTTPStatusCode") != 201:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "error": "Failed to invalidate CloudFront cache",
+                "details": res,
+            })
+        }
+
     return {
         "statusCode": 200,
-        "body": "Flags generated and uploaded to S3"
+        "body": "Flags generated and uploaded successfully"
     }
