@@ -1,2 +1,2 @@
-# free-flags-site
+# Free Flags Site
 Free flags for everyone
